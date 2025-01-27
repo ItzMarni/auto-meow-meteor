@@ -1,24 +1,21 @@
 {
   "schemaVersion": 1,
-  "id": "addon-template",
+  "id": "meteor-auto-meow",
   "version": "${version}",
-  "name": "Addon Template",
-  "description": "An addon template for Meteor Client addons.",
+  "name": "AutoMeow",
+  "description": "AutoMeow ported from faghack to meteor addon",
   "authors": [
-    "seasnail"
+    "ItzMarni"
   ],
-  "contact": {
-    "repo": "https://github.com/MeteorDevelopment/meteor-addon-template"
-  },
-  "icon": "assets/template/icon.png",
+  "icon": "assets/automeow/icon.png",
   "environment": "client",
   "entrypoints": {
     "meteor": [
-      "com.example.addon.AddonTemplate"
+      "me.marni.addon.AutoMeow"
     ]
   },
   "mixins": [
-    "addon-template.mixins.json"
+    "automeow.mixins.json"
   ],
   "custom": {
     "meteor-client:color": "225,25,25"
