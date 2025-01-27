@@ -13,7 +13,6 @@ public class AutoMeow extends MeteorAddon {
     @Override
     public void onInitialize() {
         LOG.info("Initializing AutoMeow");
-
         // Modules
         Modules.get().add(new AutoMeowModule());
     }

