@@ -24,7 +24,7 @@ public class AutoMeowModule extends Module {
         .defaultValue(3)
         .min(0)
         .sliderMin(0)
-        .sliderMax(120)
+        .sliderMax(300)
         .build()
     );
 
