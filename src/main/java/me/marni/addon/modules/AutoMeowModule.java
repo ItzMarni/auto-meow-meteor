@@ -11,6 +11,13 @@ public class AutoMeowModule extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private long lastResponseTime = 0;
 
+    private final Setting<String> triggerTexts = sgGeneral.add(new StringSetting.Builder()
+        .name("triggers")
+        .description("Comma-separated list of texts that trigger a response")
+        .defaultValue("meow,kitty,cat")
+        .build()
+    );
+
     private final Setting<String> respondText = sgGeneral.add(new StringSetting.Builder()
         .name("response")
         .description("Text to respond with")
@@ -43,7 +50,7 @@ public class AutoMeowModule extends Module {
     );
 
     public AutoMeowModule() {
-        super(Categories.Misc, "auto-meow", "Automatically responds to meow messages");
+        super(Categories.Misc, "auto-meow", "Very meow module");
     }
 
     private String extractContent(String message, String after) {
@@ -61,27 +68,42 @@ public class AutoMeowModule extends Module {
         if (mc.player == null) return;
 
         String message = event.getMessage().getString();
-
         if (message.contains(mc.player.getGameProfile().getName())) return;
         if (System.currentTimeMillis() - lastResponseTime < delaySeconds.get() * 1000L) return;
 
+        // get trigger words
+        String[] triggers = triggerTexts.get().split(",");
+        for (int i = 0; i < triggers.length; i++) {
+            triggers[i] = triggers[i].trim().toLowerCase();
+        }
+
+        String content = null;
+        String responsePrefix = "";
+
         // reg chat
         if (message.contains("<") && message.contains(">")) {
-            if (!extractContent(message, ">").contains("meow")) return;
-            ChatUtils.sendPlayerMsg(respondText.get());
-            lastResponseTime = System.currentTimeMillis();
+            content = extractContent(message, ">");
         }
         // party chat
         else if (message.startsWith("[P]") && respondToParty.get()) {
-            if (!extractContent(message, "]").contains("meow")) return;
-            ChatUtils.sendPlayerMsg("/p " + respondText.get());
-            lastResponseTime = System.currentTimeMillis();
+            content = extractContent(message, "]");
+            responsePrefix = "/p ";
         }
         // whispers
         else if (message.contains(" whispers: ") && respondToWhispers.get()) {
-            if (!extractContent(message, "whispers: ").contains("meow")) return;
-            ChatUtils.sendPlayerMsg("/r " + respondText.get());
-            lastResponseTime = System.currentTimeMillis();
+            content = extractContent(message, "whispers: ");
+            responsePrefix = "/r ";
+        }
+
+        if (content != null) {
+            content = content.toLowerCase();
+            for (String trigger : triggers) {
+                if (!trigger.isEmpty() && content.contains(trigger)) {
+                    ChatUtils.sendPlayerMsg(responsePrefix + respondText.get());
+                    lastResponseTime = System.currentTimeMillis();
+                    return;
+                }
+            }
         }
     }
 }
