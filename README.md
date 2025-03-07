@@ -3,6 +3,4 @@
 Made specifically for Constantiam, it automatically meows whenever someone else meows in chat.  
 Supports Constantiam's whispers and party chat as well.
 
-Supports 1.21.1 only
-
 If you run into any issues, let me know: [Discord](https://discord.gg/BM9HQYhR2C)  
